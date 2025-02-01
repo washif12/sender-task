@@ -1,11 +1,15 @@
 <template>
-  <div class="container">
+  <v-app>
+    <v-container>
+  
     <Table />
-  </div>
+  </v-container>
+  </v-app>
 
 </template>
 
 <script setup>
 import Table from './components/Table.vue';
+import Header from './components/Header.vue';
 
 </script>

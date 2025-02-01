@@ -22,7 +22,7 @@ body {
 
 .container {
   margin: 30px auto;
-  width: 400px;
+  width: auto;
 }
 
 h1 {
@@ -43,8 +43,8 @@ h4 {
 
 .inc-exp-container {
   background-color: #fff;
-  box-shadow: var(--box-shadow);
-  padding: 20px;
+  /* box-shadow: var(--box-shadow);
+  padding: 20px; */
   display: flex;
   justify-content: space-between;
   margin: 20px 0;
@@ -78,7 +78,7 @@ label {
   margin: 10px 0;
 }
 
-input[type='text'],
+/* input[type='text'],
 input[type='number'] {
   border: 1px solid #dedede;
   border-radius: 2px;
@@ -86,11 +86,24 @@ input[type='number'] {
   font-size: 16px;
   padding: 10px;
   width: 100%;
+} */
+
+.pill {
+  background-color: #ddd;
+  border: none;
+  color: black;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: auto;
+  border-radius: 16px;
 }
 
-.btn {
+.btn-header {
   cursor: pointer;
-  background-color: #9c88ff;
+  background-color: #FF9800;
   box-shadow: var(--box-shadow);
   color: #fff;
   border: 0;
@@ -98,7 +111,8 @@ input[type='number'] {
   font-size: 16px;
   margin: 10px 0 30px;
   padding: 10px;
-  width: 100%;
+  border-radius: 5px;
+  /* width: 100%; */
 }
 
 .btn:focus,
