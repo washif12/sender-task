@@ -10,10 +10,10 @@
 
 body {
   background-color: #f7f7f7;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   min-height: 100vh;
   margin: 0;
   font-family: 'Lato', sans-serif;
@@ -21,8 +21,8 @@ body {
 }
 
 .container {
-  margin: 30px auto;
-  width: auto;
+  margin: auto;
+  width: 80%;
 }
 
 h1 {
@@ -42,11 +42,13 @@ h4 {
 }
 
 .inc-exp-container {
-  background-color: #fff;
-  /* box-shadow: var(--box-shadow);
+  /* background-color: #fff;
+  box-shadow: var(--box-shadow);
   padding: 20px; */
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   margin: 20px 0;
 }
 
@@ -57,6 +59,11 @@ h4 {
 
 .inc-exp-container > div:first-of-type {
   border-right: 1px solid #dedede;
+}
+
+.v-alert {
+  width: 50%;
+  margin: auto;
 }
 
 .money {
@@ -73,10 +80,10 @@ h4 {
   color: #c0392b;
 }
 
-label {
+/* label {
   display: inline-block;
   margin: 10px 0;
-}
+} */
 
 /* input[type='text'],
 input[type='number'] {
@@ -86,7 +93,7 @@ input[type='number'] {
   font-size: 16px;
   padding: 10px;
   width: 100%;
-} */
+} 
 
 .pill {
   background-color: #ddd;
@@ -99,7 +106,7 @@ input[type='number'] {
   margin: 4px 2px;
   cursor: auto;
   border-radius: 16px;
-}
+} */
 
 .btn-header {
   cursor: pointer;
@@ -115,7 +122,7 @@ input[type='number'] {
   /* width: 100%; */
 }
 
-.btn:focus,
+/* .btn:focus,
 .delete-btn:focus {
   outline: 0;
 }
@@ -163,7 +170,7 @@ input[type='number'] {
 
 .list li:hover .delete-btn {
   opacity: 1;
-}
+} */
 
 /* @import './base.css';
 

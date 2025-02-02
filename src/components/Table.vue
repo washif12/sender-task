@@ -1,54 +1,64 @@
 <template>
-    <div class="inc-exp-container">
-        <div class="header-text">
-            <h2>Sorting Training System</h2>
-        </div>
-        <div class="header-button">
-            <v-btn color="orange" class="mb-4 mt-5" @click="openDialog">Start Sorting</v-btn>
-            <!-- <button class="btn-header">Start Sorting</button> -->
-            <!-- Dialog for Setting Row Count -->
-            <v-dialog v-model="dialog" max-width="400px">
-                <v-card>
-                    <v-card-title>Enter a number of how many people you want to add to the list</v-card-title>
-                    <v-card-text>
-                        <v-text-field v-model="rowCount" v-model.number="rowCount" label="Number of Rows"
-                            :error-messages="rowError" min="1" max="50" step="1"></v-text-field>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="" @click="dialog = false">Cancel</v-btn>
-                        <v-btn color="orange" @click="generateRandomData">Start</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+    <div class="container">
+        <v-alert class="d-flex align-center justify-center" color="orange" icon="$info" text="Press Start to load data or restart"></v-alert>
+        <div class="inc-exp-container">
+            <div class="text-left">
+                <h2>Sorting Training System</h2>
+            </div>
+            <div class="text-right">
+                <v-btn color="orange" class="sort-button" @click="openDialog">Start Sorting!</v-btn>
+                <!-- <button class="btn-header">Start Sorting</button> -->
+                <!-- Dialog for Setting Row Count -->
+                <v-dialog v-model="dialog" max-width="400px" persistent transition="dialog-bottom-transition">
+                    <v-card title="How many people?"
+                    text="Enter a number of how many people you want to add to the
+                            list">
+                        <!-- <v-card-title class="text-wrap"></v-card-title> -->
+                        <v-card-text>
+                            <v-text-field v-model="rowCount" v-model.number="rowCount" label="Number of Rows"
+                                variant="outlined" :error-messages="rowError" min="1" max="50" step="1"></v-text-field>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn color="" variant="tonal" @click="dialog = false">Cancel</v-btn>
+                            <v-btn color="orange" variant="flat" class="sort-button"
+                                @click="generateRandomData">Start</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </div>
+
         </div>
 
-    </div>
-    <div class="container">
 
         <!-- Sorting Status Alert -->
-        <v-alert v-if="people.length > 0" :type="isSorted ? 'success' : 'error'" class="mb-4">
+        <v-alert v-if="people.length > 0" :type="isSorted ? 'success' : 'error'"
+            class="mb-4 d-flex align-center justify-center">
             {{ isSorted ? `Table is sorted! Time Taken: ${elapsedTime} seconds` : "Table is NOT sorted!" }}
         </v-alert>
         <!-- Timer Display -->
-        <p v-if="people.length > 0"><strong>Time Elapsed:</strong> {{ elapsedTime }} seconds</p>
+        <p class="text-center" v-if="people.length > 0"><strong>Time Elapsed:</strong> {{ elapsedTime }} seconds</p>
 
-        <v-data-table :headers="headers" :hide-default-footer="true" class="elevation-2">
+        <v-data-table :headers="headers" :hide-default-footer="true" class="elevation-2 mt-4" hide-no-data>
             <template #tbody>
                 <draggable v-model="people" tag="tbody" item-key="potatoes" @end="checkSorting"
                     :disabled="dragDisabled">
                     <template #item="{ element }">
                         <tr>
-                            <td>{{ element.name }}</td>
                             <td>{{ element.email }}</td>
                             <td>{{ element.potatoes }}</td>
-                            <td>{{ element.location }}</td>
-                            <td><button class="pill">{{ element.tag }}</button></td>
+                            <!-- <td>{{ element.location }}</td> -->
+                            <td><v-chip>{{ element.tag }}</v-chip></td>
+                            <td>{{ element.name }}</td>
                             <!-- <td>{{ element.iron }}</td> -->
                         </tr>
                     </template>
                 </draggable>
             </template>
         </v-data-table>
+
+        <v-snackbar v-model="snackbar" :timeout="5000" color="green">
+            Congrats! Sorting completed in {{ elapsedTime }} seconds!
+      </v-snackbar>
     </div>
 </template>
 <script setup>
@@ -61,103 +71,18 @@ import { VCardText } from "vuetify/lib/components/index.mjs";
 import { VTextField } from "vuetify/lib/components/index.mjs";
 import { VCardActions } from "vuetify/lib/components/index.mjs";
 import { VAlert } from "vuetify/lib/components/index.mjs";
+import { VChip } from "vuetify/lib/components/index.mjs";
+import { VSnackbar } from "vuetify/lib/components/index.mjs";
 import { ref, watch } from "vue";
 import draggable from "vuedraggable";
 
 const headers = ref([
-    {
-        align: 'start',
-        key: 'name',
-        sortable: false,
-        title: 'Name',
-    },
-    { key: 'email', title: 'Email', sortable: false },
+    { align: 'start', key: 'email', title: 'Email', sortable: false },
     { key: 'potatoes', title: 'Potatoes', sortable: false },
-    { key: 'location', title: 'Location', sortable: false },
+    // { key: 'location', title: 'Location', sortable: false },
     { key: 'tag', title: 'Tags', sortable: false },
+    { key: 'name', sortable: false, title: 'Name' },
     // { key: 'iron', title: 'Iron (%)', sortable: false },
-]);
-const desserts = ref([
-    {
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: 1,
-    },
-    {
-        name: 'Ice cream sandwich',
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: 1,
-    },
-    {
-        name: 'Eclair',
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: 7,
-    },
-    {
-        name: 'Cupcake',
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: 8,
-    },
-    {
-        name: 'Gingerbread',
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: 16,
-    },
-    {
-        name: 'Jelly bean',
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: 0,
-    },
-    {
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: 2,
-    },
-    {
-        name: 'Honeycomb',
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: 45,
-    },
-    {
-        name: 'Donut',
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: 22,
-    },
-    {
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: 6,
-    },
 ]);
 
 // Dialog state
@@ -167,6 +92,7 @@ const dragDisabled = ref("false");
 // Number of rows to generate
 const rowCount = ref(null);
 const rowError = ref("");
+const snackbar = ref(false);
 
 const openDialog = () => {
     dialog.value = true;
@@ -215,8 +141,8 @@ const generateUniqueNumbers = (count, min, max) => {
 const people = ref([]);
 const generateRandomData = () => {
     const count = Math.floor(rowCount.value);
-    if (!count || count < 1 || count > 50 || rowCount.value % 1 !== 0) {
-        rowError.value = "Please enter a  whole number between 1 and 50.";
+    if (!count || count < 20 || count > 100 || rowCount.value % 1 !== 0) {
+        rowError.value = "Please enter a  whole number between 20 and 100.";
     } else {
         rowError.value = "";
         const uniquePotatoes = generateUniqueNumbers(count, 1, 100); // Ensure unique potato counts
@@ -224,7 +150,6 @@ const generateRandomData = () => {
             name: getRandomName(),
             email: getRandomEmail(),
             potatoes: potatoCount,
-            location: 'Dhaka',
             tag: 'Customers'
         }));
         isSorted.value = people.value.every((item, index, arr) => {
@@ -250,6 +175,7 @@ const checkSorting = () => {
     if (isSorted.value) {
         clearInterval(timerInterval);
         dragDisabled.value = true;
+        snackbar.value = true;
     }
 };
 
@@ -267,5 +193,30 @@ watch(dialog, (newValue, oldValue) => {
 /* Add cursor style for draggable rows */
 tr {
     cursor: grab;
+}
+
+.sort-button {
+    color: white !important;
+}
+
+.v-label .v-field-label .v-field-label--floating {
+    top: 3px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .v-alert {
+        width: 100%;
+    }
 }
 </style>
