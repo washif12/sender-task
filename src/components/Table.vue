@@ -41,14 +41,14 @@
         <v-data-table :headers="headers" :hide-default-footer="true" class="elevation-2 mt-4" hide-no-data>
             <template #tbody>
                 <draggable v-model="people" tag="tbody" item-key="potatoes" @end="checkSorting"
-                    :disabled="dragDisabled">
+                    :disabled="dragDisabled" handle=".drag_col">
                     <template #item="{ element }">
                         <tr>
-                            <td>{{ element.email }}</td>
-                            <td>{{ element.potatoes }}</td>
+                            <td class="drag_col"><v-icon small class="page__grab-icon" > mdi-arrow-all </v-icon>{{ element.email }}</td>
+                            <td class="drag_col"><v-icon small class="page__grab-icon" > mdi-arrow-all </v-icon>{{ element.potatoes }}</td>
+                            <td>{{ element.name }}</td>
                             <!-- <td>{{ element.location }}</td> -->
                             <td><v-chip>{{ element.tag }}</v-chip></td>
-                            <td>{{ element.name }}</td>
                             <!-- <td>{{ element.iron }}</td> -->
                         </tr>
                     </template>
@@ -73,15 +73,16 @@ import { VCardActions } from "vuetify/lib/components/index.mjs";
 import { VAlert } from "vuetify/lib/components/index.mjs";
 import { VChip } from "vuetify/lib/components/index.mjs";
 import { VSnackbar } from "vuetify/lib/components/index.mjs";
+import { VIcon } from "vuetify/lib/components/index.mjs";
 import { ref, watch } from "vue";
 import draggable from "vuedraggable";
 
 const headers = ref([
     { align: 'start', key: 'email', title: 'Email', sortable: false },
     { key: 'potatoes', title: 'Potatoes', sortable: false },
+    { key: 'name', sortable: false, title: 'Name' },
     // { key: 'location', title: 'Location', sortable: false },
     { key: 'tag', title: 'Tags', sortable: false },
-    { key: 'name', sortable: false, title: 'Name' },
     // { key: 'iron', title: 'Iron (%)', sortable: false },
 ]);
 
@@ -191,7 +192,7 @@ watch(dialog, (newValue, oldValue) => {
 
 <style scoped>
 /* Add cursor style for draggable rows */
-tr {
+.drag_col {
     cursor: grab;
 }
 
